@@ -1,15 +1,36 @@
 # CONS Construction Website
 
-Premium bilingual (English/Arabic) single-page website for a modern construction, infrastructure and EPC company.
+Premium bilingual construction-company website inspired by the information architecture and visual rhythm of leading regional contractors.
 
-## Features
-- Deep navy corporate identity
-- English/Arabic language switcher
-- Responsive desktop and mobile layout
-- Company, capabilities, projects, performance and sustainability sections
-- Static HTML architecture for simple deployment
+## Live site
 
-## Deployment
-Use `index.html` directly on Hostinger or enable GitHub Pages from the repository settings using the `main` branch and root folder.
+https://yassernet1990.github.io/cons/
 
-> Replace the demonstration company statistics, projects, email, phone number and images with verified company information before public launch.
+## Publishing
+
+GitHub Pages should publish from:
+
+- Branch: `gh-pages`
+- Folder: `/(root)`
+
+## Files
+
+- `index.html` — complete responsive website
+- `404.html` — redirects incorrect paths to the homepage
+- `.nojekyll` — disables Jekyll processing
+- `README.md` — project documentation
+
+## Website sections
+
+- Full-screen project hero
+- Company introduction and statistics
+- Vision, mission and values
+- Leadership message
+- Construction sectors and services
+- Sustainability commitments
+- Selected projects
+- Clients and partners
+- Regional presence
+- News and contact footer
+
+The website is static and can also be uploaded directly to Hostinger without a build process.
