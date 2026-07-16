@@ -1,19 +1,55 @@
 const body=document.body,header=document.getElementById('siteHeader');
 const motion=document.createElement('link');motion.rel='stylesheet';motion.href='motion.css';document.head.appendChild(motion);
-body.insertAdjacentHTML('afterbegin','<div class="page-loader" id="pageLoader"><div class="loader-brand"><span class="loader-mark"></span><strong>CONS</strong><small>BUILDING WHAT COMES NEXT</small></div><div class="loader-line"><i></i></div></div><div class="scroll-progress" id="scrollProgress"></div><div class="cursor-dot" id="cursorDot"></div><div class="cursor-ring" id="cursorRing"></div>');
+body.insertAdjacentHTML('afterbegin','<div class="page-loader" id="pageLoader"><div class="loader-brand"><span class="loader-mark"></span><strong>CONS</strong><small>REAL CONSTRUCTION FOOTAGE</small></div><div class="loader-line"><i></i></div></div><div class="scroll-progress" id="scrollProgress"></div><div class="cursor-dot" id="cursorDot"></div><div class="cursor-ring" id="cursorRing"></div>');
 const hero=document.querySelector('.hero');hero.classList.add('video-hero');
-hero.innerHTML=`<div class="hero-slider" id="heroSlider">
-${[
-['Integrated Construction Partner','We build what progress demands.','CONS delivers landmark buildings, infrastructure and complex EPC projects through one disciplined delivery platform.','Premium mixed-use delivery','From design coordination to handover, we align engineering, procurement and site control into one accountable path.','https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4','https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2400&q=88'],
-['Engineering + Procurement + Construction','One team. One standard. One outcome.','We connect technical intelligence, disciplined procurement and field execution under a single operating model built for certainty.','Infrastructure with execution depth','Roads, public-realm works, utilities and enabling packages are coordinated through measurable planning and field discipline.','https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4','https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=2400&q=88'],
-["Built for Saudi Arabia's Next Chapter",'Local insight. Global delivery discipline.','A modern Saudi contractor focused on premium execution, safety leadership, localization and measurable value creation.','Executive-grade project governance','We translate board-level ambition into site-level clarity with reporting, sequencing, quality assurance and delivery controls.','https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4','https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=2400&q=88'],
-['High-performance field delivery','Crafted to feel global. Built to deliver locally.','Every touchpoint is designed to reflect premium capability—from the first client meeting to the final handover milestone.','Luxury finishes and public realm','Specialized packages, finishing quality and public-realm detailing are delivered with the same rigor as core construction works.','https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4','https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=2400&q=88']
-].map((x,i)=>`<article class="hero-slide ${i?'':'active'}"><video class="hero-video" autoplay muted loop playsinline poster="${x[6]}"><source src="${x[5]}" type="video/mp4"></video><span class="hero-shade"></span><div class="hero-grid"><div class="hero-content"><p class="eyebrow">${x[0]}</p><h1>${x[1]}</h1><p class="hero-copy">${x[2]}</p></div><aside class="hero-aside"><p class="hero-mini-label">Featured capability</p><h3>${x[3]}</h3><p>${x[4]}</p><div class="hero-aside-metrics"><div><strong>${i+1<10?'0':''}${i+1}</strong><span>Premium sector experience</span></div><div><strong>${['25+','360°','HSE','VIP'][i]}</strong><span>Measured delivery discipline</span></div></div></aside></div></article>`).join('')}
-</div><div class="hero-strip">${['Buildings','Infrastructure','EPC & Industrial','Public Realm'].map((x,i)=>`<button class="hero-key ${i?'':'active'}" data-slide="${i}"><small>Sector 0${i+1}</small><strong>${x}</strong></button>`).join('')}</div><div class="hero-bottom"><div class="hero-controls"><button id="prevSlide">←</button><span id="slideCount">01 / 04</span><button id="nextSlide">→</button></div><a class="hero-cta magnetic" href="#about">Discover CONS <span>↘</span></a></div>`;
+const heroVideos=[
+  {
+    eyebrow:'Tower Cranes + Urban Construction',
+    title:'Real construction momentum, captured on site.',
+    copy:'A cinematic crane time-lapse sets the tone for a contractor built around progress, precision and delivery control.',
+    capability:'High-rise construction delivery',
+    note:'Structural coordination, lifting plans, site logistics and daily progress visibility aligned into one command rhythm.',
+    sector:'Buildings',metric:'25+',metricText:'Years of combined construction expertise',
+    video:'https://player.vimeo.com/external/342269134.sd.mp4?s=8edfdab6d6c312125900d4f9bb623afb707cab38&profile_id=139&oauth2_token_id=1223210874',
+    poster:'https://pikwizard.com/pw/medium/b4cec2772f08c7a1bd3c1f63426f66f4.jpg'
+  },
+  {
+    eyebrow:'Engineers + Site Planning',
+    title:'Decisions happen where the work happens.',
+    copy:'Real engineers reviewing plans on a construction site create a stronger, more credible first impression than generic motion graphics.',
+    capability:'Engineering-led project control',
+    note:'Design coordination, procurement sequencing and site execution are managed together before issues become delays.',
+    sector:'Engineering',metric:'360°',metricText:'Design, procurement and site coordination',
+    video:'https://player.vimeo.com/external/345176967.sd.mp4?s=10e03e08f6c57a7901f830b78594b66083683a5c&profile_id=139&oauth2_token_id=1223210874',
+    poster:'https://thumbs.wbm.im/pw/medium/aacf38f5a099d840880db172125fdd19.jpg'
+  },
+  {
+    eyebrow:'Construction Site Collaboration',
+    title:'A premium contractor starts with field clarity.',
+    copy:'Hard hats, drawings, site discussion and active coordination bring the homepage closer to real contractor identity.',
+    capability:'Site supervision + delivery governance',
+    note:'From foremen to engineers, every package is tracked through quality, safety and milestone-based control.',
+    sector:'Infrastructure',metric:'HSE',metricText:'Safety-first execution culture',
+    video:'https://player.vimeo.com/external/345176754.sd.mp4?s=a5b26714f0b4e585f25e03f738880709712669cb&profile_id=139&oauth2_token_id=1223210874',
+    poster:'https://pikwizard.com/pw/medium/d60498adeafe17970a5741d827b12e89.jpg'
+  },
+  {
+    eyebrow:'Drone View + Project Progress',
+    title:'Built to be seen from the ground and the sky.',
+    copy:'Aerial construction footage adds scale, movement and confidence while keeping the experience professional and corporate.',
+    capability:'Project progress visibility',
+    note:'Drone-level reporting, progress tracking and executive presentation turn site activity into clear client confidence.',
+    sector:'Public Realm',metric:'VIP',metricText:'Executive-grade client presentation',
+    video:'https://player.vimeo.com/external/442915493.sd.mp4?s=3690d3ebbb23a86a9356761803868c41ffcc4d06&profile_id=139&oauth2_token_id=1223210874',
+    poster:'https://pikwizard.com/pw/medium/21528a7277960453bb633edba2ba7523.jpg'
+  }
+];
+hero.innerHTML=`<div class="hero-slider" id="heroSlider">${heroVideos.map((x,i)=>`<article class="hero-slide ${i?'':'active'}"><video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="${x.poster}"><source src="${x.video}" type="video/mp4"></video><span class="video-badge">REAL CONSTRUCTION VIDEO</span><span class="hero-shade"></span><div class="hero-grid"><div class="hero-content"><p class="eyebrow">${x.eyebrow}</p><h1>${x.title}</h1><p class="hero-copy">${x.copy}</p></div><aside class="hero-aside"><p class="hero-mini-label">Featured capability</p><h3>${x.capability}</h3><p>${x.note}</p><div class="hero-aside-metrics"><div><strong>${String(i+1).padStart(2,'0')}</strong><span>${x.sector}</span></div><div><strong>${x.metric}</strong><span>${x.metricText}</span></div></div></aside></div></article>`).join('')}</div><div class="hero-strip">${heroVideos.map((x,i)=>`<button class="hero-key ${i?'':'active'}" data-slide="${i}" type="button"><small>Video 0${i+1}</small><strong>${x.sector}</strong></button>`).join('')}</div><div class="hero-bottom"><div class="hero-controls"><button id="prevSlide" type="button">←</button><span id="slideCount">01 / 04</span><button id="nextSlide" type="button">→</button></div><a class="hero-cta magnetic" href="#about">Discover CONS <span>↘</span></a></div>`;
 window.addEventListener('scroll',()=>header.classList.toggle('scrolled',scrollY>20));
 const slides=[...document.querySelectorAll('.hero-slide')],keys=[...document.querySelectorAll('.hero-key')],count=document.getElementById('slideCount');let current=0;
-function showSlide(i){slides[current].classList.remove('active');current=(i+slides.length)%slides.length;slides[current].classList.add('active');keys.forEach((k,n)=>k.classList.toggle('active',n===current));count.textContent=String(current+1).padStart(2,'0')+' / 04';slides.forEach((s,n)=>{const v=s.querySelector('video');n===current?v.play().catch(()=>{}):v.pause()})}
-document.getElementById('nextSlide').onclick=()=>showSlide(current+1);document.getElementById('prevSlide').onclick=()=>showSlide(current-1);keys.forEach((k,i)=>k.onclick=()=>showSlide(i));setInterval(()=>showSlide(current+1),7000);showSlide(0);
+function playActiveVideo(){slides.forEach((s,n)=>{const v=s.querySelector('video');if(!v)return;if(n===current){v.muted=true;v.loop=true;v.playsInline=true;v.play().catch(()=>{});}else{v.pause();}})}
+function showSlide(i){slides[current].classList.remove('active');current=(i+slides.length)%slides.length;slides[current].classList.add('active');keys.forEach((k,n)=>k.classList.toggle('active',n===current));count.textContent=String(current+1).padStart(2,'0')+' / 04';playActiveVideo();}
+document.getElementById('nextSlide').onclick=()=>showSlide(current+1);document.getElementById('prevSlide').onclick=()=>showSlide(current-1);keys.forEach((k,i)=>k.onclick=()=>showSlide(i));setInterval(()=>showSlide(current+1),8500);showSlide(0);
 const menu=document.getElementById('mobileMenu');document.getElementById('menuBtn').onclick=()=>{menu.classList.add('open');menu.setAttribute('aria-hidden','false')};document.getElementById('mobileClose').onclick=()=>{menu.classList.remove('open');menu.setAttribute('aria-hidden','true')};menu.querySelectorAll('a').forEach(a=>a.onclick=()=>menu.classList.remove('open'));
 document.querySelectorAll('.service-tab').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.service-tab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.service-panel').forEach(p=>p.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.target).classList.add('active')}));
 let arabic=false;document.getElementById('langBtn').onclick=()=>{arabic=!arabic;body.classList.toggle('rtl',arabic);document.documentElement.lang=arabic?'ar':'en';document.documentElement.dir=arabic?'rtl':'ltr';document.getElementById('langBtn').textContent=arabic?'EN':'AR'};
