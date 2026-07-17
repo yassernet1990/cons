@@ -10,37 +10,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply targeted branding only
+      - name: Apply emblem-only green logo sizing
         run: |
           python3 - <<'PY'
           from pathlib import Path
           p=Path('index.html')
           s=p.read_text(encoding='utf-8')
-          pairs=[
-          ('<title>CONS 2026 | Next-Gen Construction</title>','<title>SDC Sedrah Contracting | Next-Gen General Contracting</title>'),
-          ('A bold one-page Gen-Z construction company website for CONS, founded in 2026.','SDC Sedrah Contracting — a next-generation general contracting company.'),
-          ('<header class="nav"><a class="brand" href="#top"><span class="logo"></span><span><b>CONS</b><small>FOUNDED 2026</small></span></a>','<header class="nav"><a class="brand" href="#top"><img class="brandLogo" src="sdc-logo.svg" alt="SDC Sedrah Contracting"></a>'),
-          ('CONS is a 2026 construction company','SDC Sedrah Contracting is a next-generation general contracting company'),
-          ('The site does not pretend CONS is old. It positions the company as a 2026 contractor','The site positions SDC Sedrah Contracting as a modern general contractor'),
-          ('The site frames CONS as a team','The site frames SDC as a team'),
-          ('info@cons.sa','info@sedrahcontracting.com'),
-          ('© 2026 CONS Construction','© 2026 SDC Sedrah Contracting'),
-          ('Next-gen contracting identity · one-page build','General contracting · built for the next generation'),
-          ('CONS شركة مقاولات حديثة جداً','SDC شركة مقاولات عامة حديثة جداً'),
-          ('يعرض CONS كشركة مقاولات مولودة في 2026','يعرض SDC كشركة مقاولات عامة حديثة')]
-          for a,b in pairs:
-              s=s.replace(a,b)
-          s=s.replace('</head>','<link rel="icon" href="sdc-favicon.svg" type="image/svg+xml"></head>',1)
-          s=s.replace('.brand{display:flex;gap:12px;align-items:center}', '.brand{display:flex;align-items:center}.brandLogo{width:220px;height:54px;object-fit:contain;filter:brightness(0) invert(1)}')
-          s=s.replace('@media(max-width:650px){.nav{inset:8px}', '@media(max-width:650px){.nav{inset:8px}.brandLogo{width:166px;height:44px}')
+          s=s.replace('.brandLogo{width:220px;height:54px;object-fit:contain;filter:brightness(0) invert(1)}', '.brandLogo{width:72px;height:58px;object-fit:contain}')
+          s=s.replace('.brandLogo{width:166px;height:44px}', '.brandLogo{width:58px;height:48px}')
           p.write_text(s,encoding='utf-8')
           assert '<style>' in s and '</style>' in s and '<script>' in s and '</script>' in s
-          assert 'SDC Sedrah Contracting' in s
+          assert 'sdc-logo.svg' in s
           PY
-          curl -fsSL https://raw.githubusercontent.com/yassernet1990/genz/main/sdc-logo.svg -o sdc-logo.svg
-          curl -fsSL https://raw.githubusercontent.com/yassernet1990/genz/main/sdc-favicon.svg -o sdc-favicon.svg
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add index.html sdc-logo.svg sdc-favicon.svg
-          git commit -m "Apply SDC branding safely" || exit 0
+          git add index.html
+          git commit -m "Use green emblem-only logo" || exit 0
           git push
