@@ -1,0 +1,41 @@
+name: Fix Mobile Header
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-mobile-header.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-mobile-header:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make mobile navigation compact
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old = '@media(max-width:650px){.nav{inset:8px}.brandLogo{width:68px;height:56px}.brandName{font-size:25px;letter-spacing:.12em}.chip{display:none}.heroInner{padding:125px 22px 54px}'
+          new = '@media(max-width:650px){.nav{inset:7px 9px auto;padding:6px 10px;border-radius:16px;min-height:58px}.brand{gap:7px}.brandLogo{width:48px;height:44px}.brandName{font-size:21px;letter-spacing:.1em}.navActions{gap:6px}.lang{padding:9px 11px;font-size:11px}.chip{display:none}.heroInner{padding:105px 22px 54px}'
+
+          if old not in text:
+              raise SystemExit('Expected mobile header CSS was not found')
+
+          text = text.replace(old, new, 1)
+          path.write_text(text, encoding='utf-8')
+
+          assert '.nav{inset:7px 9px auto;padding:6px 10px' in text
+          assert '.brandLogo{width:48px;height:44px}' in text
+          assert '.heroInner{padding:105px 22px 54px}' in text
+          PY
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add index.html
+          git commit -m "Fix compact mobile navigation" || exit 0
+          git push
