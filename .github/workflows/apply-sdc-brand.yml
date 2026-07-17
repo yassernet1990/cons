@@ -10,20 +10,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply emblem-only green logo sizing
+      - name: Enlarge emblem and add white SDC wordmark
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-          s=s.replace('.brandLogo{width:220px;height:54px;object-fit:contain;filter:brightness(0) invert(1)}', '.brandLogo{width:72px;height:58px;object-fit:contain}')
-          s=s.replace('.brandLogo{width:166px;height:44px}', '.brandLogo{width:58px;height:48px}')
-          p.write_text(s,encoding='utf-8')
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          s = s.replace(
+              '.brand{display:flex;align-items:center}.brandLogo{width:72px;height:58px;object-fit:contain}',
+              '.brand{display:flex;align-items:center;gap:12px}.brandLogo{width:84px;height:66px;object-fit:contain}.brandName{color:#fff;font-size:30px;font-weight:900;letter-spacing:.14em;line-height:1}'
+          )
+          s = s.replace(
+              '.brandLogo{width:58px;height:48px}',
+              '.brandLogo{width:68px;height:56px}.brandName{font-size:25px;letter-spacing:.12em}'
+          )
+          s = s.replace(
+              '<a class="brand" href="#top"><img class="brandLogo" src="sdc-logo.svg" alt="SDC Sedrah Contracting"></a>',
+              '<a class="brand" href="#top" aria-label="SDC home"><img class="brandLogo" src="sdc-logo.svg" alt="SDC logo"><span class="brandName">SDC</span></a>'
+          )
+
+          p.write_text(s, encoding='utf-8')
           assert '<style>' in s and '</style>' in s and '<script>' in s and '</script>' in s
-          assert 'sdc-logo.svg' in s
+          assert '<span class="brandName">SDC</span>' in s
           PY
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add index.html
-          git commit -m "Use green emblem-only logo" || exit 0
+          git commit -m "Enlarge emblem and add white SDC wordmark" || exit 0
           git push
