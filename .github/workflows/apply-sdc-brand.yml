@@ -18,6 +18,21 @@ jobs:
 
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
+          fragment = Path('sdc-content.html').read_text(encoding='utf-8')
 
           s = re.sub(r'<title>.*?</title>', '<title>SDC | Saudi General Contracting Company</title>', s, count=1)
-          s = re.sub(r'<meta name="description" content=".*?">', '<meta name="description" content="SDC is a Saudi general contracting company established in 2025, delivering commercial, industrial, infrastructure and fit-out projects
+          s = re.sub(r'<meta name="description" content=".*?">', '<meta name="description" content="SDC is a Saudi general contracting company established in 2025, delivering commercial, industrial, infrastructure and fit-out projects with a focus on safety, quality and reliable execution.">', s, count=1)
+          s = s.replace('<nav class="links"><a href="#about">Signal</a><a href="#markets">Markets</a><a href="#delivery">Ops</a><a href="#projects">Work</a><a href="#contact">Contact</a></nav>', '<nav class="links"><a href="#about" data-ar="عن الشركة">About</a><a href="#markets" data-ar="القطاعات">Sectors</a><a href="#delivery" data-ar="منهجية التنفيذ">Delivery</a><a href="#projects" data-ar="القدرات">Capabilities</a><a href="#contact" data-ar="تواصل معنا">Contact</a></nav>')
+          s = s.replace('<a class="chip" href="#contact">Launch a Build</a>', '<a class="chip" href="#contact" data-ar="ابدأ مشروعك">Start a Project</a>')
+          s = re.sub(r'<main id="top">.*?</main><footer>.*?</footer>', fragment, s, count=1, flags=re.S)
+
+          p.write_text(s, encoding='utf-8')
+          assert 'ESTABLISHED 2025' in s
+          assert 'تأسست عام 2025' in s
+          assert '<script>' in s and '</script>' in s
+          PY
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add index.html
+          git commit -m "Apply approved bilingual Saudi contractor content" || exit 0
+          git push
