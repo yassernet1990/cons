@@ -1,0 +1,32 @@
+name: Apply SDC Brand
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-sdc-brand.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  rebrand:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply targeted SDC branding
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from urllib.request import urlopen
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          replacements = {
+              '<title>CONS 2026 | Next-Gen Construction</title>': '<title>SDC Sedrah Contracting | Next-Gen General Contracting</title>',
+              '<meta name="description" content="A bold one-page Gen-Z construction company website for CONS, founded in 2026.">': '<meta name="description" content="SDC Sedrah Contracting — a next-generation general contracting company delivering commercial, infrastructure, industrial and fit-out projects.">\n<link rel="icon" href="sdc-favicon.svg" type="image/svg+xml">',
+              '.brand{display:flex;gap:12px;align-items:center}.logo{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,var(--acid),var(--cyan));position:relative;box-shadow:0 0 38px #00e5ff55}.logo:after{content:"";position:absolute;inset:11px;border:5px solid #05050a;border-right-color:transparent;border-radius:6px}.brand b{font-size:22px;letter-spacing:.16em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.22em;font-weight:900}': '.brand{display:flex;align-items:center}.brandLogo{display:block;width:220px;height:54px;object-fit:contain;object-position:left center;filter:brightness(0) invert(1)}',
+              '@media(max-width:650px){.nav{inset:8px}': '@media(max-width:650px){.nav{inset:8px}.brandLogo{width:166px;height:44px}',
+              '<header class="nav"><a class="brand" href="#top"><span class="logo"></span><span><b>CONS</b><small>FOUNDED 2026</small></span></a>': '<header class="nav"><a class="brand" href="#top" aria-label="SDC Sedrah Contracting home"><img class="brandLogo" src="sdc-logo.svg" alt="SDC Sedrah Contracting"></a>',
+              'data-ar="CONS شركة مقاول
