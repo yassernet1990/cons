@@ -1,0 +1,22 @@
+name: Replace Construction Videos
+
+on:
+  push:
+    paths:
+      - '.github/workflows/replace-construction-videos.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  replace-videos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replace all site videos
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          path
