@@ -1,22 +1,32 @@
 name: Replace Construction Videos
-
 on:
   push:
     paths:
       - '.github/workflows/replace-construction-videos.yml'
-
 permissions:
   contents: write
-
 jobs:
   replace-videos:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Replace all site videos
+      - name: Replace all videos with construction footage
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
-
-          path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          old1='https://commons.wikimedia.org/wiki/Special:Redirect/file/Men_at_work_in_building_site.webm'
+          old2='https://commons.wikimedia.org/wiki/Special:Redirect/file/Road_Construction.webm'
+          new1='https://commons.wikimedia.org/wiki/Special:Redirect/file/Construction_Timelapse_-_SPIE.webm'
+          new2='https://commons.wikimedia.org/wiki/Special:Redirect/file/Studio_Ocho_Ocho_Construction_Timelapse.webm'
+          s=s.replace(old1,new1).replace(old2,new2)
+          p.write_text(s,encoding='utf-8')
+          assert old1 not in s and old2 not in s
+          assert s.count('<video') >= 4
+          PY
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add index.html
+          git commit -m "Replace all videos with professional construction footage" || exit 0
+          git push
